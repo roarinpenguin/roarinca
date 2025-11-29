@@ -27,7 +27,7 @@ export function initDb() {
       organizational_unit TEXT,
       country TEXT,
       state TEXT,
-      locality_name TEXT,
+      locality TEXT,
       key_type TEXT,
       key_size INTEGER,
       initialized INTEGER DEFAULT 0,
