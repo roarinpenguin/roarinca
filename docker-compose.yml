@@ -1,0 +1,37 @@
+version: "3.9"
+
+services:
+  backend:
+    build: ./backend
+    container_name: certui-backend
+    environment:
+      - NODE_ENV=production
+      - PORT=4000
+      - DB_PATH=/data/certui.db
+      - STORAGE_DIR=/data
+      - JWT_SECRET=change-me-in-env
+      - CA_EXPORT_PROTECTION=enabled
+    volumes:
+      - certui-data:/data
+    depends_on:
+      - openssl
+
+  frontend:
+    build: ./frontend
+    container_name: certui-frontend
+    environment:
+      - VITE_API_BASE=http://localhost:4000
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  openssl:
+    image: alpine:3.20
+    container_name: certui-openssl
+    command: ["sh", "-c", "apk add --no-cache openssl && tail -f /dev/null"]
+    volumes:
+      - certui-data:/data
+
+volumes:
+  certui-data:
