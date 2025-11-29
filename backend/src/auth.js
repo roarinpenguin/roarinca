@@ -91,11 +91,14 @@ export function registerAuthRoutes(app) {
 
       const token = createToken({ id: row.id, username: row.username });
 
+      // Only set secure cookie if actually behind HTTPS (check X-Forwarded-Proto or explicit env)
+      const isHttps = req.headers['x-forwarded-proto'] === 'https' || process.env.FORCE_SECURE_COOKIES === 'true';
+
       res
         .cookie('token', token, {
           httpOnly: true,
           sameSite: 'lax',
-          secure: process.env.NODE_ENV === 'production',
+          secure: isHttps,
           maxAge: 8 * 60 * 60 * 1000,
         })
         .json({ ok: true, username: row.username });
