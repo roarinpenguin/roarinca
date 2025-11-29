@@ -55,7 +55,9 @@ export function authMiddleware(req, res, next) {
   const token = req.cookies && req.cookies.token;
 
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    // eslint-disable-next-line no-console
+    console.log('[Auth] No token cookie found. Cookies:', Object.keys(req.cookies || {}));
+    return res.status(401).json({ error: 'Unauthorized - no token' });
   }
 
   try {
@@ -63,7 +65,9 @@ export function authMiddleware(req, res, next) {
     req.user = decoded;
     return next();
   } catch (e) {
-    return res.status(401).json({ error: 'Invalid token' });
+    // eslint-disable-next-line no-console
+    console.log('[Auth] Token verification failed:', e.message);
+    return res.status(401).json({ error: 'Invalid token', details: e.message });
   }
 }
 

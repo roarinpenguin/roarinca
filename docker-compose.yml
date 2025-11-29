@@ -18,8 +18,6 @@ services:
   frontend:
     build: ./frontend
     container_name: certui-frontend
-    environment:
-      - VITE_API_BASE=http://localhost:4000
     ports:
       - "4042:80"
     depends_on:
