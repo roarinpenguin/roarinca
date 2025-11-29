@@ -4,9 +4,11 @@ WORKDIR /app
 COPY package.json package-lock.json* ./
 RUN npm install || npm install
 
-COPY index.html vite.config.* .
+COPY index.html ./
+COPY vite.config.mts ./
 COPY src ./src
-COPY tailwind.config.* postcss.config.* .
+COPY public ./public
+COPY tailwind.config.cjs postcss.config.cjs ./
 
 RUN npm run build
 

@@ -4,4 +4,76 @@
 
 body {
   @apply bg-slate-950 text-slate-50 antialiased;
+  background: linear-gradient(135deg, #0f0a1a 0%, #1a0d2e 25%, #0d0d1a 50%, #1a0d2e 75%, #0f0a1a 100%);
+  background-attachment: fixed;
+}
+
+/* Glossy card effect */
+.glossy-card {
+  background: linear-gradient(145deg, rgba(130, 36, 255, 0.08) 0%, rgba(15, 10, 26, 0.9) 50%, rgba(130, 36, 255, 0.05) 100%);
+  border: 1px solid rgba(130, 36, 255, 0.2);
+  box-shadow: 
+    0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 4px 24px rgba(130, 36, 255, 0.15),
+    0 20px 50px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+}
+
+/* Purple glow button */
+.btn-glow {
+  background: linear-gradient(135deg, #9c50ff 0%, #8224ff 50%, #681bcc 100%);
+  box-shadow: 
+    0 0 20px rgba(130, 36, 255, 0.4),
+    0 4px 15px rgba(130, 36, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn-glow:hover {
+  box-shadow: 
+    0 0 30px rgba(130, 36, 255, 0.6),
+    0 6px 20px rgba(130, 36, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Input glow focus */
+input:focus, select:focus, textarea:focus {
+  box-shadow: 
+    0 0 0 2px rgba(130, 36, 255, 0.3),
+    0 0 20px rgba(130, 36, 255, 0.15);
+}
+
+/* Purple accent scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 10, 26, 0.5);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8224ff 0%, #681bcc 100%);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #9c50ff 0%, #8224ff 100%);
+}
+
+/* Subtle purple ambient glow */
+.ambient-glow::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(130, 36, 255, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
 }
