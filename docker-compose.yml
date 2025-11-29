@@ -9,8 +9,9 @@ services:
       - PORT=4000
       - DB_PATH=/data/certui.db
       - STORAGE_DIR=/data
-      - JWT_SECRET=change-me-in-env
-      - CA_EXPORT_PROTECTION=enabled
+      - JWT_SECRET=${JWT_SECRET}
+      - CA_ADMIN_PASSWORD=${CA_ADMIN_PASSWORD}
+      - CA_EXPORT_PROTECTION=${CA_EXPORT_PROTECTION}
     volumes:
       - certui-data:/data
     depends_on:

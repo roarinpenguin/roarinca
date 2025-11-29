@@ -3,6 +3,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { initDb } from './db.js';
+import { seedAdminUser, registerAuthRoutes } from './auth.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,6 +18,11 @@ app.use(cors({
   origin: true,
   credentials: true,
 }));
+
+initDb();
+seedAdminUser();
+
+registerAuthRoutes(app);
 
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
