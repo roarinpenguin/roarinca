@@ -100,12 +100,28 @@ authorityKeyIdentifier = keyid,issuer
     const sanEntries = san.split(',').map((s) => s.trim()).filter(Boolean);
     if (sanEntries.length > 0) {
       const sanParts = [];
-      for (const entry of sanEntries) {
-        if (/^\d{1,3}(\.\d{1,3}){3}$/.test(entry) || entry.includes(':')) {
+      for (let entry of sanEntries) {
+        const lowerEntry = entry.toLowerCase();
+        
+        // Handle explicit prefixes - pass through as-is
+        if (lowerEntry.startsWith('dns:')) {
+          sanParts.push(`DNS:${entry.substring(4).trim()}`);
+        } else if (lowerEntry.startsWith('ip:')) {
+          sanParts.push(`IP:${entry.substring(3).trim()}`);
+        } else if (lowerEntry.startsWith('email:')) {
+          sanParts.push(`email:${entry.substring(6).trim()}`);
+        }
+        // Auto-detect type if no prefix
+        else if (/^\d{1,3}(\.\d{1,3}){3}$/.test(entry)) {
+          // IPv4 address
+          sanParts.push(`IP:${entry}`);
+        } else if (/^[0-9a-fA-F:]+$/.test(entry) && entry.includes(':')) {
+          // IPv6 address
           sanParts.push(`IP:${entry}`);
         } else if (entry.includes('@')) {
           sanParts.push(`email:${entry}`);
         } else {
+          // Default to DNS
           sanParts.push(`DNS:${entry}`);
         }
       }
