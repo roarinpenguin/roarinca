@@ -83,14 +83,43 @@ extendedKeyUsage = ${presetConfig.extKeyUsage}
       let ipCount = 1;
       let emailCount = 1;
 
-      for (const entry of sanEntries) {
-        if (/^\d{1,3}(\.\d{1,3}){3}$/.test(entry) || entry.includes(':')) {
+      for (let entry of sanEntries) {
+        // Handle explicit prefixes (DNS:, IP:, email:) - strip them and use the specified type
+        const lowerEntry = entry.toLowerCase();
+        
+        if (lowerEntry.startsWith('dns:')) {
+          const value = entry.substring(4).trim();
+          if (value) {
+            config += `DNS.${dnsCount} = ${value}\n`;
+            dnsCount++;
+          }
+        } else if (lowerEntry.startsWith('ip:')) {
+          const value = entry.substring(3).trim();
+          if (value) {
+            config += `IP.${ipCount} = ${value}\n`;
+            ipCount++;
+          }
+        } else if (lowerEntry.startsWith('email:')) {
+          const value = entry.substring(6).trim();
+          if (value) {
+            config += `email.${emailCount} = ${value}\n`;
+            emailCount++;
+          }
+        }
+        // Auto-detect type if no prefix
+        else if (/^\d{1,3}(\.\d{1,3}){3}$/.test(entry)) {
+          // IPv4 address
+          config += `IP.${ipCount} = ${entry}\n`;
+          ipCount++;
+        } else if (/^[0-9a-fA-F:]+$/.test(entry) && entry.includes(':')) {
+          // IPv6 address
           config += `IP.${ipCount} = ${entry}\n`;
           ipCount++;
         } else if (entry.includes('@')) {
           config += `email.${emailCount} = ${entry}\n`;
           emailCount++;
         } else {
+          // Default to DNS
           config += `DNS.${dnsCount} = ${entry}\n`;
           dnsCount++;
         }
