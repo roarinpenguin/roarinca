@@ -84,22 +84,22 @@ extendedKeyUsage = ${presetConfig.extKeyUsage}
       let emailCount = 1;
 
       for (let entry of sanEntries) {
-        // Handle explicit prefixes (DNS:, IP:, email:) - strip them and use the specified type
+        // Handle explicit prefixes (DNS:, IP:, email: or DNS=, IP=, email=) - strip them and use the specified type
         const lowerEntry = entry.toLowerCase();
         
-        if (lowerEntry.startsWith('dns:')) {
+        if (lowerEntry.startsWith('dns:') || lowerEntry.startsWith('dns=')) {
           const value = entry.substring(4).trim();
           if (value) {
             config += `DNS.${dnsCount} = ${value}\n`;
             dnsCount++;
           }
-        } else if (lowerEntry.startsWith('ip:')) {
+        } else if (lowerEntry.startsWith('ip:') || lowerEntry.startsWith('ip=')) {
           const value = entry.substring(3).trim();
           if (value) {
             config += `IP.${ipCount} = ${value}\n`;
             ipCount++;
           }
-        } else if (lowerEntry.startsWith('email:')) {
+        } else if (lowerEntry.startsWith('email:') || lowerEntry.startsWith('email=')) {
           const value = entry.substring(6).trim();
           if (value) {
             config += `email.${emailCount} = ${value}\n`;
